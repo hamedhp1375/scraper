@@ -68,6 +68,9 @@ class Eta_scaraper:
             time.sleep(10)
             # # اد کردن اعضا
             self.add_user()
+            # گروه هدف
+            # self.get_id()
+            self.target_grop()
 
             time.sleep(30000)
 
@@ -75,6 +78,7 @@ class Eta_scaraper:
             print("❌ Error: ", e)
             self.driver.quit()
             self.driver = self.init_driver()
+
 
     def serch(self):
         self.driver.get("https://web.eitaa.com/#26136928")
@@ -121,6 +125,7 @@ class Eta_scaraper:
             print("✅ روی آخرین لینک کلیک شد.")
         except (TimeoutException, StaleElementReferenceException) as e:
             print("⚠️ خطا در کلیک روی آخرین لینک:", e)
+
 
     def add_user(self):
         try:
@@ -210,6 +215,28 @@ class Eta_scaraper:
 
         except Exception as e:
             print("⚠️ خطا در کلیک روی تعداد اعضا:", e)
+
+    def get_id(self):
+        self.serch()
+        time.sleep(10)
+        usernames = []
+        try:
+            with open("usernames.csv", "r", encoding="utf-8") as csvfile:
+                reader = csv.reader(csvfile)
+                next(reader, None)  # رد کردن هدر
+                for row in reader:
+                    if row:  # اگر سطر خالی نبود
+                        usernames.append(row[0])
+        except FileNotFoundError:
+            print("⚠️ فایل usernames.csv پیدا نشد.")
+
+        return usernames
+
+    def target_grop(self):
+        ids = self.get_id()
+        
+
+
 
 if __name__ == "__main__":
     profile_path = r"C:\path\to\custom\profile"
