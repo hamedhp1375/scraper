@@ -1,3 +1,4 @@
-2025/09/09-01:01:58.220 3eac Reusing MANIFEST C:\pyton\eta_scraper\profile\Default\Local Storage\leveldb/MANIFEST-000001
-2025/09/09-01:01:58.230 3eac Recovering log #3
-2025/09/09-01:01:58.236 3eac Reusing old log C:\pyton\eta_scraper\profile\Default\Local Storage\leveldb/000003.log 
+2025/09/11-07:57:34.780 82c Reusing MANIFEST C:\pyton\eta_scraper\profile\Default\Local Storage\leveldb/MANIFEST-000001
+2025/09/11-07:57:34.799 82c Recovering log #3
+2025/09/11-07:57:34.799 82c (ignoring error) C:\pyton\eta_scraper\profile\Default\Local Storage\leveldb/000003.log: dropping 520 bytes; Corruption: checksum mismatch
+2025/09/11-07:57:34.811 82c Reusing old log C:\pyton\eta_scraper\profile\Default\Local Storage\leveldb/000003.log 

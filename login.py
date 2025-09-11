@@ -9,10 +9,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from scaraper_main import ScraperMain
 
 
-class Login(ScraperMain):
-    def __init__(self, profile_path):
-
-        super().__init__(profile_path)
+class Login:
+    def __init__(self, drive):
+        self.driver = drive
 
     def login(self):
         try:
@@ -46,9 +45,6 @@ class Login(ScraperMain):
                 print("✅ لاگین انجام شد.")
             else:
                 print("✅ قبلاً لاگین شده‌ای، نیازی به ورود دوباره نیست.")
-
-
         except Exception as e:
             print("❌ Error: ", e)
-            self.driver.quit()
-            self.driver = self.init_driver()
+
