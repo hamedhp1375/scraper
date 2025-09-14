@@ -1,10 +1,14 @@
 import time
+from fileinput import filename
+from operator import truediv
+from random import choice
 
 from selenium.webdriver.chrome import webdriver
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from add_user_csv import Add_user_csv
+from add_user_to_target_grop import Add_user_to_target_grop
 from login import Login
 
 
@@ -29,56 +33,33 @@ if __name__ == '__main__':
     driver = start.driver
     start_login = Login(driver)
     start_login.login()
-    start_add_user_csv=Add_user_csv(driver)
-    start_add_user_csv.serch()
-    time.sleep(3)
-    start_add_user_csv.add_user()
-    time.sleep(3000)
+
+    while True:
+        print("\n===== منو عملیات =====")
+        print("1. اجرای Add_user_csv")
+        print("2. اجرای Add_user_to_target_grop")
+        print("3. خروج")
+
+        choice = input("عدد عملیات مورد نظر را وارد کنید: ")
+
+        if choice == "1":
+            start_add_user_csv = Add_user_csv(driver)
+            fileName = start_add_user_csv.prepare_csv_file()
+            start_add_user_csv.search()
+            time.sleep(3)
+            start_add_user_csv.add_user(fileName)
+            start_login.login()
+        elif choice == "2":
+            target = Add_user_to_target_grop(driver)
+            time.sleep(2)
+            target.read_file()
+            time.sleep(2)
+            target.add_user_to_target_grop()
+            start_login.login()
+        elif choice == "3":
+            print("خروج از برنامه...")
+            break
+        else:
+            print("گزینه نامعتبر است. لطفا دوباره تلاش کنید.")
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #
-    #
-    # start_login.login()
-    # time.sleep(2)
-    # start_add_user = Add_user_csv(profile_path)
-    # start_add_user.serch()
-    # time.sleep(500)
-
-
-
-
-
-    # while True:
-    #
-    #     input_ = input("Enter your purpose 1- get user from group save to csv \n 2- Add user from csv file to target group")
-    #     if input_ == "1":
-    #         assertss = AddUserCsv(profile_path)
-    #         assertss.run()
-    #         break
-    #
-    #     if input_ == "2":
-    #
-    #         pass

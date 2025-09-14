@@ -12,9 +12,18 @@ class Add_user_csv:
     def __init__(self, driver):
         self.driver = driver
 
-    def serch(self):
 
-        self.driver.get("https://web.eitaa.com/#26136928")
+    def search(self):
+        save_msg_li = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((
+                By.XPATH,
+                "//li[contains(@class,'chatlist-chat')]//span[@class='i18n' and text()='پیام های ذخیره شده']/ancestor::li"
+            ))
+        )
+
+        save_msg_li.click()
+
+        # self.driver.get("https://web.eitaa.com/#26136928")
         try:
             saved_item = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "li.chatlist-chat[data-peer-id='26136928']"))
@@ -61,7 +70,9 @@ class Add_user_csv:
             print("⚠️ خطا در کلیک روی آخرین لینک:", e)
             return
 
-    def add_user(self, filename="usernames.csv"):
+
+    def add_user(self,filename):
+        filename = filename
         try:
             # کلیک روی المان نمایش تعداد اعضا (صبر تا قابل کلیک شدن)
             members_elem = WebDriverWait(self.driver, 10).until(
@@ -218,3 +229,38 @@ class Add_user_csv:
 
         except Exception as e:
             print("⚠️ خطای کلی در add_user:", e)
+
+
+    def prepare_csv_file(self):
+        """
+        ساخت فایل جدید یا انتخاب فایل موجود و برگرداندن نام فایل CSV
+        """
+        create_new = input("میخوای فایل جدید بسازی؟ (y/n): ").strip().lower()
+        if create_new == 'y':
+            new_name = input("اسم فایل جدید را وارد کن (بدون .csv): ").strip()
+            if not new_name.endswith(".csv"):
+                new_name += ".csv"
+            with open(new_name, "w", encoding="utf-8", newline="") as f:
+                writer = csv.writer(f)
+                writer.writerow(["ID", "Username", "Phone"])
+            print(f"✅ فایل {new_name} ساخته شد.")
+
+        # گرفتن همه فایل‌های CSV موجود
+        csv_files = [f for f in os.listdir() if f.endswith(".csv")]
+        if not csv_files:
+            print("⚠️ هیچ فایل CSV موجود نیست. لطفا فایل جدید بساز.")
+            return self.prepare_csv_file()
+
+        print("\n📂 فایل‌های موجود:")
+        for i, file in enumerate(csv_files, start=1):
+            print(f"{i}. {file}")
+
+        while True:
+            choice = input("شماره فایل مورد نظر را وارد کن: ").strip()
+            if choice.isdigit():
+                choice = int(choice)
+                if 1 <= choice <= len(csv_files):
+                    selected_file = csv_files[choice - 1]
+                    print(f"✅ فایل انتخاب شد: {selected_file}")
+                    return selected_file
+            print("❌ شماره نامعتبر است. دوباره تلاش کن.")
