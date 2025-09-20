@@ -13,6 +13,11 @@ class Login:
 
     def login(self):
         pass
+    def check_I_am_in_phone_input(self):
+        pass
+    def check_code_input(self):
+        pass
+
 
 
 class LoginCLI(Login):
@@ -21,6 +26,7 @@ class LoginCLI(Login):
 
     def login(self):
         try:
+
             self.driver.get("https://web.eitaa.com/")
             time.sleep(5)  # صبر برای لود اولیه
 
@@ -55,9 +61,13 @@ class LoginCLI(Login):
             print("❌ Error: ", e)
         pass
 
+
 class LoginGraphic(Login):
     def __init__(self, drive):
         super().__init__(drive)
+
+    def is_Login(self):
+        pass
 
     def login(self):
         pass

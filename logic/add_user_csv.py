@@ -1,7 +1,7 @@
 import csv
 import os
 import time
-
+from result_scraper import *
 
 from selenium.common import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -237,26 +237,34 @@ class Add_user_csv:
         except Exception as e:
             print("⚠️ خطای کلی در add_user:", e)
 
-
-    def prepare_csv_file(self):
+    def prepare_csv_file(self, folder="../result_scraper"):
         """
         ساخت فایل جدید یا انتخاب فایل موجود و برگرداندن نام فایل CSV
         """
+
+        # اگه پوشه وجود نداشت، بساز
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
         create_new = input("میخوای فایل جدید بسازی؟ (y/n): ").strip().lower()
         if create_new == 'y':
             new_name = input("اسم فایل جدید را وارد کن (بدون .csv): ").strip()
             if not new_name.endswith(".csv"):
                 new_name += ".csv"
-            with open(new_name, "w", encoding="utf-8", newline="") as f:
+
+            # مسیر کامل فایل
+            file_path = os.path.join(folder, new_name)
+
+            with open(file_path, "w", encoding="utf-8", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(["ID", "Username", "Phone"])
-            print(f"✅ فایل {new_name} ساخته شد.")
+            print(f"✅ فایل {file_path} ساخته شد.")
 
-        # گرفتن همه فایل‌های CSV موجود
-        csv_files = [f for f in os.listdir() if f.endswith(".csv")]
+        # گرفتن همه فایل‌های CSV موجود در پوشه
+        csv_files = [f for f in os.listdir(folder) if f.endswith(".csv")]
         if not csv_files:
             print("⚠️ هیچ فایل CSV موجود نیست. لطفا فایل جدید بساز.")
-            return self.prepare_csv_file()
+            return self.prepare_csv_file(folder)
 
         print("\n📂 فایل‌های موجود:")
         for i, file in enumerate(csv_files, start=1):
@@ -267,7 +275,8 @@ class Add_user_csv:
             if choice.isdigit():
                 choice = int(choice)
                 if 1 <= choice <= len(csv_files):
-                    selected_file = csv_files[choice - 1]
+                    # مسیر کامل فایل انتخاب‌شده
+                    selected_file = os.path.join(folder, csv_files[choice - 1])
                     print(f"✅ فایل انتخاب شد: {selected_file}")
                     return selected_file
             print("❌ شماره نامعتبر است. دوباره تلاش کن.")

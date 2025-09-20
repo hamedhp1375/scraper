@@ -17,9 +17,9 @@ class Add_user_to_target_grop:
         search=Add_user_csv(driver)
         search.search()
 
-    def read_file(self):
+    def read_file(self,file_result="../result_scraper"):
         # گرفتن همه فایل‌های csv موجود
-        csv_files = [f for f in os.listdir() if f.endswith(".csv")]
+        csv_files = [f for f in os.listdir(file_result) if f.endswith(".csv")]
         if not csv_files:
             print("❌ هیچ فایل CSV پیدا نشد.")
             return []
@@ -38,7 +38,8 @@ class Add_user_to_target_grop:
 
         users = []
         try:
-            with open(selected_file, "r", encoding="utf-8") as csvfile:
+            selected_path = os.path.join(file_result, selected_file)
+            with open(selected_path, "r", encoding="utf-8") as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     username = row.get("Username", "").strip()
@@ -54,20 +55,31 @@ class Add_user_to_target_grop:
 
         print(f"✅ {len(users)} ردیف از {selected_file} خونده شد.")
         return users
+
     def add_user_to_target_grop(self):
-        get_title = self.driver.find_element(By.CSS_SELECTOR, "div.content > div.top > div.user-title > span.peer-title")
+        get_title = self.driver.find_element(By.CSS_SELECTOR,
+                                             "div.content > div.top > div.user-title > span.peer-title")
         self.driver.execute_script("arguments[0].click();", get_title)
-        button_add=self.driver.find_element(By.CSS_SELECTOR, "button.btn-circle.btn-corner.z-depth-1.tgico-addmember_filled")
+        button_add = self.driver.find_element(By.CSS_SELECTOR,
+                                              "button.btn-circle.btn-corner.z-depth-1.tgico-addmember_filled")
         self.driver.execute_script("arguments[0].click();", button_add)
         time.sleep(3)
+
         users = self.read_file()  # لیست تاپل‌ها
 
         for username, phone in users:
-            if username:
-                search_value = f"@{username}"
-            elif phone:
-                search_value = phone
-            else:
+            search_value = None
+
+            if username:  # اگر username موجوده
+                # بررسی اینکه username فقط عدد یا + هست و فاصله‌ها رو حذف کن
+                if re.fullmatch(r"\+?\d+(?:\s?\d+)*", username):
+                    search_value = username.replace(" ", "")
+                else:
+                    search_value = f"@{username}"  # رشته واقعی، @ اضافه کن
+            elif phone:  # اگر username خالیه و شماره موجوده
+                search_value = phone.replace(" ", "")  # شماره، بدون @ و فاصله
+
+            if not search_value:
                 continue  # هیچ چیزی برای سرچ نیست
 
             search_input = WebDriverWait(self.driver, 10).until(
@@ -86,6 +98,7 @@ class Add_user_to_target_grop:
             print(f"✅ اولین کاربر انتخاب شد: {search_value}")
             time.sleep(2)
 
+        # کلیک روی دکمه بعدی و افزودن
         next_button = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(
                 (By.CSS_SELECTOR, "button.btn-circle.btn-corner.z-depth-1.tgico-arrow_next.rp.is-visible"))
@@ -93,10 +106,9 @@ class Add_user_to_target_grop:
         self.driver.execute_script("arguments[0].click();", next_button)
         print("✅ دکمه 'بعدی' کلیک شد.")
         time.sleep(2)
+
         add_button = self.driver.find_element(
             By.XPATH,
             "//div[contains(@class,'popup-buttons')]//button[span[text()='افزودن']]"
         )
         add_button.click()
-
-
