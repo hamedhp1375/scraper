@@ -1,15 +1,26 @@
 # simple_pyqt6_app.py
 import sys
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QLineEdit, QPushButton
+from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QLineEdit, QPushButton, QGridLayout
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("سلام از PyQt6")
-        self.setCentralWidget(QLabel("سلام دنیا!"))
-        self.resize(800, 600)
+        self.resize(500, 400)
         self.move(100, 100)
+        self.grid = QGridLayout()
+
+        self.profilePathInput = QLineEdit()
+        self.profilePathInput.setPlaceholderText("Hi")
+
+        self.grid.addWidget(self.profilePathInput, 0, 0)
+
+        self.setLayout(self.grid)
+
+
+        # self.setCentralWidget(QLabel("سلام دنیا!"))
+
 
     def login(self):
         self.label = QLabel("شماره خود را وارد کنید")
