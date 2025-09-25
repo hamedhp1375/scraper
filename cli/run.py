@@ -8,7 +8,7 @@ from logic.add_user_csv import Add_user_csv
 from logic.add_user_to_target_grop import Add_user_to_target_grop
 from logic.login import LoginCLI
 from logic.scaraper_main import ScraperMain
-
+from logic.send_link import SendLink
 
 if __name__ == '__main__':
     profile_path = r"/profile"
@@ -25,7 +25,8 @@ if __name__ == '__main__':
         print("\n===== منو عملیات =====")
         print("1. اجرای Add_user_csv")
         print("2. اجرای Add_user_to_target_grop")
-        print("3. خروج")
+        print("3. ارسال لینک دعوت ")
+        print("4. خروج")
 
         choice = input("عدد عملیات مورد نظر را وارد کنید: ")
         if not start_operate:
@@ -51,6 +52,11 @@ if __name__ == '__main__':
             target.add_user_to_target_grop()
             start_login.login()
         elif choice == "3":
+            start_add_user_csv = Add_user_csv(driver)
+            fileName = start_add_user_csv.prepare_csv_file()
+            send_link=SendLink(driver,fileName)
+            send_link.search_member()
+        elif choice == "4":
             print("خروج از برنامه...")
             break
         else:

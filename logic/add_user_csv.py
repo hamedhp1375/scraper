@@ -173,20 +173,16 @@ class Add_user_csv:
                         phone = ""
 
                     # اگر هم username و هم phone خالی بود، نادیده بگیر
-                    # اگر هم username و هم phone خالی بود، نادیده بگیر
-                    if not username and not phone:
-                        print(f"⚠️ برای peer_id {peer_id} هیچ نام کاربری یا تلفنی پیدا نشد.")
-                    else:
-                        if username:  # اگر یوزرنیم موجود بود
-                            if username not in existing_usernames:
-                                new_users.append((username, phone))
-                                existing_usernames.add(username)
-                                print(f"➕ جدید (با یوزرنیم): {username} | {phone}")
-                        elif phone:  # اگر یوزرنیم نداشت ولی شماره داشت
-                            if phone not in existing_usernames:
-                                new_users.append((phone, phone))
-                                existing_usernames.add(phone)
-                                print(f"➕ جدید (فقط شماره): {phone}")
+                    if username:  # اگر یوزرنیم موجود بود
+                        if username not in existing_usernames:
+                            new_users.append((username, phone, peer_id))  # اضافه شد
+                            existing_usernames.add(username)
+                            print(f"➕ جدید (با یوزرنیم): {username} | {phone} | {peer_id}")
+                    elif phone:  # اگر یوزرنیم نداشت ولی شماره داشت
+                        if phone not in existing_usernames:
+                            new_users.append((phone, phone, peer_id))  # اضافه شد
+                            existing_usernames.add(phone)
+                            print(f"➕ جدید (فقط شماره): {phone} | {peer_id}")
 
                     # برگشت به لیست اعضا و صبر تا لود شدن
                     time.sleep(0.5)
@@ -216,7 +212,7 @@ class Add_user_csv:
                 with open(filename, "a", newline="", encoding="utf-8") as csvfile:
                     writer = csv.writer(csvfile)
                     if not file_exists:
-                        writer.writerow(["ID", "Username", "Phone"])
+                        writer.writerow(["ID", "Username", "peer_id"])
 
                     # محاسبه ID شروعی (بر اساس تعداد ردیف‌های قبلی)
                     start_id = 1
@@ -228,9 +224,9 @@ class Add_user_csv:
                         except:
                             start_id = 1
 
-                    for idx, (username, phone) in enumerate(new_users, start=start_id):
-                        writer.writerow([idx, username, phone if phone else ""])
-                print("نام‌های کاربری جدید در فایل ذخیره شد.")
+                    for idx, (username, phone, pid) in enumerate(new_users, start=start_id):
+                        writer.writerow([idx, username, pid])  # Phone حذف شد و PeerID جایگزین شد
+                    print("✅ نام‌های کاربری + PeerID در فایل ذخیره شد.")
             else:
                 print("نام جدیدی برای ذخیره وجود نداشت.")
 
@@ -257,7 +253,7 @@ class Add_user_csv:
 
             with open(file_path, "w", encoding="utf-8", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow(["ID", "Username", "Phone"])
+                writer.writerow(["ID", "Username", "peer_id"])
             print(f"✅ فایل {file_path} ساخته شد.")
 
         # گرفتن همه فایل‌های CSV موجود در پوشه
