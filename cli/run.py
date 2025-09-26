@@ -56,6 +56,9 @@ if __name__ == '__main__':
             fileName = start_add_user_csv.prepare_csv_file()
             send_link=SendLink(driver,fileName)
             send_link.search_member()
+            send_link.send_link()
+            time.sleep(1)
+            start_login.login()
         elif choice == "4":
             print("خروج از برنامه...")
             break

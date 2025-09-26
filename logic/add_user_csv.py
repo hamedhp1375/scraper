@@ -102,8 +102,10 @@ class Add_user_csv:
                     continue
                 # اگر مالک هست ردش کن
                 try:
-                    el.find_element(By.XPATH, ".//span[contains(text(), 'مالک')]")
-                    continue
+                    title_elem = el.find_element(By.CSS_SELECTOR, "span.dialog-title-details > span.i18n")
+                    title_text = title_elem.text.strip()
+                    if title_text:  # اگر عنوانی وجود داشت، عضو را رد کن
+                        continue
                 except:
                     pass
                 peer_ids.append(pid)

@@ -1,11 +1,16 @@
 import csv
 import os
+import time
+
+
+from selenium.webdriver.common.by import By
 
 from logic.add_user_to_target_grop import Add_user_to_target_grop
 
 
 class SendLink:
     def __init__(self, driver, file):
+        self.input_link=input("لینک دعوت را وارد کنید: ")
         self.driver = driver
         self.file = file
         self.peer_id_result = []
@@ -22,4 +27,19 @@ class SendLink:
 
 
     def send_link(self):
-        pass
+        for item in self.peer_id_result:
+            self.driver.get(f"https://web.eitaa.com/#{item}")
+            time.sleep(1)
+            input_link = self.driver.find_element(By.CSS_SELECTOR,
+                                                  "div.input-message-input.scrollable.scrollable-y.i18n.no-scrollbar")
+            input_link.send_keys(f"{self.input_link}")
+            time.sleep(0.5)
+            send = self.driver.find_element(By.CSS_SELECTOR, "button.btn-icon.tgico-none.btn-circle")
+            send.click()
+            time.sleep(0.5)
+
+
+
+
+
+
