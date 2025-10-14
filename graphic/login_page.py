@@ -1,60 +1,56 @@
-# simple_pyqt6_app.py
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QLabel, QGridLayout
 import sys
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QLineEdit, QPushButton, QGridLayout, QWidget
-
-from logic.login import LoginGraphic
+from graphic.dialog_box_select_file import DialogBox  # فرضی
+from logic.login import LoginCLI, LoginGraphic
 
 
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("سلام از PyQt6")
-        self.resize(500, 400)
-        self.move(100, 100)
-        self.grid = QGridLayout()
+        self.setWindowTitle("ورود اطلاعات و انتخاب فایل")
+        self.resize(450, 250)
 
-        self.profilePathInput = QLineEdit()
-        self.profilePathInput.setPlaceholderText("Hi")
+        layout = QGridLayout()
+        self.setLayout(layout)
 
-        self.profilePathInput2 = QLineEdit()
-        self.profilePathInput2.setPlaceholderText("Hi2")
+        # 🔹 دکمه انتخاب فایل
+        self.btn_file = QPushButton("انتخاب فایل")
+        self.btn_file.clicked.connect(self.select_file)
+        layout.addWidget(self.btn_file, 0, 0)
 
-        self.grid.addWidget(self.profilePathInput, 0, 0)
-        self.grid.addWidget(self.profilePathInput2, 1, 0)
+        # 🔹 ورودی شماره
+        layout.addWidget(QLabel("شماره خود را وارد کنید:"), 1, 0)
+        self.number_input = QLineEdit()
+        layout.addWidget(self.number_input, 1, 1)
 
-        self.btn_start = QPushButton("Start")
-        self.grid.addWidget(self.btn_start, 2, 0)
+        # 🔹 ورودی Username
+        layout.addWidget(QLabel("Username خود را وارد کنید:"), 2, 0)
+        self.username_input = QLineEdit()
+        layout.addWidget(self.username_input, 2, 1)
 
-        # login_g = LoginGraphic(driver)
-        # if is_login:
-        #     phone = ""
-        #     self.enter_phone = QLineEdit()
-        #     self.grid.addWidget(self.enter_phone, 3, 0)
-        #     phone =111
+        # 🔹 ورودی License
+        layout.addWidget(QLabel("License خود را وارد کنید:"), 3, 0)
+        self.license_input = QLineEdit()
+        layout.addWidget(self.license_input, 3, 1)
 
-        #     After do delete that from layout
-        #     self.code = QLineEdit()
-        #     self.grid.addWidget(self.code, 4, 0)
+        # 🔹 دکمه پایان
+        self.btn_ok = QPushButton("تأیید و خروج")
+        self.btn_ok.clicked.connect(self.close)
+        layout.addWidget(self.btn_ok, 4, 0, 1, 2)
 
+        # 🔹 متغیرها
+        self.file_path = None
+        self.phone_number = None
+        self.username = None
+        self.license = None
 
-        self.setLayout(self.grid)
+    def select_file(self):
+        dialog = DialogBox()
+        self.file_path = dialog.select_file()
 
-
-        # self.setCentralWidget(QLabel("سلام دنیا!"))
-
-
-    def login(self):
-        self.label = QLabel("شماره خود را وارد کنید")
-        self.input_box = QLineEdit()
-        self.input_box.setPlaceholderText("اینجا بنویس...")
-        self.button = QPushButton("ارسال شماره تلفن")
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    main = MainWindow()
-    main.show()
-    sys.exit(app.exec())
-
-
-
+    def closeEvent(self, event):
+        """وقتی پنجره بسته میشه، مقادیر ورودی‌ها ذخیره می‌شن"""
+        self.phone_number = self.number_input.text()
+        self.username = self.username_input.text()
+        self.license = self.license_input.text()
+        event.accept()

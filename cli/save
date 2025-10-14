@@ -1,0 +1,148 @@
+import sys
+from PyQt6.QtWidgets import QApplication, QLineEdit, QPushButton, QGridLayout, QWidget, QLabel, QHBoxLayout
+
+from logic.login import LoginGraphic
+from select_file import CSVChooserDialog
+
+class MainWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("ربات ممبر ایتا")
+        self.resize(500, 400)
+
+        self.grid = QGridLayout()
+        self.setLayout(self.grid)
+
+        # QLabel بالای QLineEdit
+        self.label = QLabel("فایل پچ را وارد کنید")
+        self.grid.addWidget(self.label, 0, 1)
+
+        # QLineEdit
+        self.profilePathInput = QLineEdit()
+        self.profilePathInput.setPlaceholderText("فایل پچ را وارد کنید")
+        self.grid.addWidget(self.profilePathInput, 0, 0)
+        # شماره تلفن
+        self.label = QLabel("شماره خود را وارد کنید")
+        self.grid.addWidget(self.label, 1, 1)
+        self.number = QLineEdit()
+        self.number.setPlaceholderText("شماره خود را وارد کنید")
+        self.grid.addWidget(self.number, 1, 0)
+
+        # انتخاب عملیات
+        self.label = QLabel("عملیات خود را اتخاب کنید")
+        self.grid.addWidget(self.label, 2, 1)
+        self.chose = QLineEdit()
+        self.chose.setPlaceholderText("عملیات را انتخاب کنید")
+        self.grid.addWidget(self.chose, 2, 0)
+
+        # منو عملیات (نمایش زیر QLineEdit)
+        menu_text = "\n===== منو عملیات =====\n1. اجرای Add_user_csv\n2. اجرای Add_user_to_target_group\n3. ارسال لینک دعوت\n4. خروج"
+        self.menu_label = QLabel(menu_text)
+        self.grid.addWidget(self.menu_label, 3, 0)
+        # username
+        self.label = QLabel("یوزر خود را وارد کنید")
+        self.grid.addWidget(self.label, 4, 1)
+        self.username = QLineEdit()
+        self.username.setPlaceholderText("یوزر خود را وارد کنید")
+        self.grid.addWidget(self.username, 4, 0)
+        # link
+        self.label = QLabel("لینک خود را وارد کنید")
+        self.grid.addWidget(self.label, 5, 1)
+        self.links = QLineEdit()
+        self.links.setPlaceholderText("لینک خود را وارد کنید")
+        self.grid.addWidget(self.links, 5, 0)
+
+
+        question_layout = QHBoxLayout()
+        self.question_label = QLabel("آیا می‌خواهید پوشه جدید درست کنید؟")
+        question_layout.addWidget(self.question_label)
+
+        self.btn_yes = QPushButton("Yes")
+        self.btn_yes.clicked.connect(self.return_y)
+        question_layout.addWidget(self.btn_yes)
+
+        self.btn_no = QPushButton("No")
+        self.btn_no.clicked.connect(self.return_n)
+        question_layout.addWidget(self.btn_no)
+
+        # اضافه کردن این بخش به گرید اصلی
+        self.grid.addLayout(question_layout, 6, 0, 1, 2)
+
+        # اضافه به داخل __init__
+        self.btn_open_dialog = QPushButton("انتخاب فایل CSV")
+        self.btn_open_dialog.clicked.connect(self.open_csv_dialog)
+        self.grid.addWidget(self.btn_open_dialog, 7, 0)
+
+        # دکمه
+        self.btn_start = QPushButton("Start")
+        self.grid.addWidget(self.btn_start, 10, 0)
+
+        # اتصال دکمه به تابع
+        self.btn_start.clicked.connect(self.show_value)
+
+        # start = ScraperMain()
+        # graphic = LoginGraphic()
+
+
+        # متغیر برای نگهداری مقدار
+        self.returned_patch = None
+        self.returned_number = None
+        self.returned_chose = None
+        self.returned_username = None
+        self.returned_links = None
+
+    def patch_file(self):
+        print(self.returned_patch)
+        return self.returned_patch
+
+    def show_number(self):
+        print(self.returned_number)
+        return self.returned_number
+
+    def show_chose(self):
+        print(self.returned_chose)
+        return self.returned_chose
+    def show_username(self):
+        print(self.returned_username)
+        return self.returned_username
+
+    def show_links(self):
+        print(self.returned_links)
+        return self.returned_links
+
+    def return_y(self):
+        print("y")
+        return "y"
+
+    def return_n(self):
+        print("n")
+        return "n"
+
+    def open_csv_dialog(self):
+        dialog = CSVChooserDialog(parent=self)
+        if dialog.exec():
+            print(f"شماره فایل انتخاب‌شده: {dialog.selected_index}")
+
+    def show_value(self):
+        # وقتی دکمه کلیک شد، مقدار گرفته و ذخیره میشه
+        self.returned_patch = self.profilePathInput.text()
+        self.returned_number = self.number.text()
+        self.returned_chose = self.chose.text()
+        self.returned_links = self.links.text()
+        self.returned_username = self.username.text()
+
+        self.patch_file()
+        self.show_number()
+        self.show_chose()
+        self.show_username()
+        self.show_links()
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
+
+
+
