@@ -48,6 +48,7 @@ class MainWindow(QWidget):
         dialog = DialogBox()
         self.file_path = dialog.select_file()
 
+
     def closeEvent(self, event):
         """وقتی پنجره بسته میشه، مقادیر ورودی‌ها ذخیره می‌شن"""
         self.phone_number = self.number_input.text()
