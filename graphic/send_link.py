@@ -12,7 +12,7 @@ class LinkInputWindow(QWidget):
         self.setLayout(layout)
 
         # برچسب
-        self.label = QLabel("لینک مورد نظر را وارد کنید:")
+        self.label = QLabel("لینک ذعوت مورد نظر را وارد کنید:")
         layout.addWidget(self.label)
 
         # ورودی لینک

@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import QApplication
 from graphic.chose_data import FileSelector
 from graphic.chose_graphic import MenuBox
 from graphic.login_page import MainWindow
+from graphic.number_user_add_grop import UserCountDialog
 from graphic.send_cod import CodeWindow
 from graphic.send_link import LinkInputWindow
 from logic.add_user_csv import Add_user_csv, Add_user_csv_graphic
@@ -85,8 +86,12 @@ if __name__ == '__main__':
             file = int(file_window.selected_file_index)
             start_add_user_csv = Add_user_csv_graphic(driver, username, link)
             file_name = start_add_user_csv.prepare_csv_file(file)
+            cunt_user_dialog=UserCountDialog()
+            cunt_user_dialog.show()
+            app.exec()
+            cunt_user=cunt_user_dialog.user_count
             time.sleep(1)
-            target_grop.add_user_to_target_grop(file_name)
+            target_grop.add_user_to_target_grop(file_name,cunt_user)
             start_login.return_home()
 
         elif selected_option == 3:

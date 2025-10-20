@@ -147,7 +147,7 @@ class Add_user_to_target_grop_graphic:
         print(f"✅ {len(users)} ردیف از {selected_file} خونده شد.")
         return users
 
-    def add_user_to_target_grop(self, file):
+    def add_user_to_target_grop(self, file,number):
         get_title = self.driver.find_element(By.CSS_SELECTOR,
                                              "div.content > div.top > div.user-title > span.peer-title")
         self.driver.execute_script("arguments[0].click();", get_title)
@@ -161,7 +161,7 @@ class Add_user_to_target_grop_graphic:
         count = 0  # ✅ شمارنده اضافه شد
 
         for username, phone in users:
-            if count >= 200:  # ✅ اگر تعداد به 200 رسید، متوقف شو
+            if count >= number:  # ✅ اگر تعداد به 200 رسید، متوقف شو
                 print("⛔️ به 200 نفر رسیدیم، عملیات متوقف شد.")
                 break
 
