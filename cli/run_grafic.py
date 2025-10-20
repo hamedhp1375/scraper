@@ -72,7 +72,8 @@ if __name__ == '__main__':
                     file=file_window.file_select
                     file_name = start_add_user_csv.prepare_csv_file(file)
 
-                    print(file)
+                    print("file------",file)
+
                     start_add_user_csv.search()
                     time.sleep(3)
                     start_add_user_csv.add_user(file_name)

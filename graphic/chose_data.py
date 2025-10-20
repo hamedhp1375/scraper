@@ -31,6 +31,7 @@ class FileSelector(QWidget):
             "All Files (*.*)"
 
         )
+        print("WE selet file ",file_path)
         if file_path:
             self.file_select=file_path
         else:
