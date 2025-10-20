@@ -1,6 +1,9 @@
 import csv
 import os
 import time
+
+from PyQt6.QtWidgets import QFileDialog
+
 from result_scraper import *
 
 from selenium.common import TimeoutException, StaleElementReferenceException
@@ -338,21 +341,22 @@ class Add_user_csv_graphic:
             return
 
 
-    def prepare_csv_file(self,file ,folder="../result_scraper"):
+    def prepare_csv_file(self,file):
         """
         ساخت فایل جدید یا انتخاب فایل موجود و برگرداندن نام فایل CSV
         """
-        csv_files = [f for f in os.listdir(folder) if f.endswith(".csv")]
-
-        choice = file
-        if choice:
-            choice = int(choice)
-            if 1 <= choice <= len(csv_files):
-                # مسیر کامل فایل انتخاب‌شده
-                selected_file = os.path.join(folder, csv_files[choice - 1])
-                print(f"✅ فایل انتخاب شد: {selected_file}")
-                return selected_file
-        print("❌ شماره نامعتبر است. دوباره تلاش کن.")
+        # csv_files = [f for f in os.listdir(folder) if f.endswith(".csv")]
+        #
+        # choice = file
+        # if choice:
+        #     choice = int(choice)
+        #     if 1 <= choice <= len(csv_files):
+        #         # مسیر کامل فایل انتخاب‌شده
+        #         selected_file = os.path.join(folder, csv_files[choice - 1])
+        #         print(f"✅ فایل انتخاب شد: {selected_file}")
+        #         return selected_file
+        return file
+        # print("❌ شماره نامعتبر است. دوباره تلاش کن.")
 
 
     def add_user(self, filename):

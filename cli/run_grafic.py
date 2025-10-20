@@ -61,7 +61,7 @@ if __name__ == '__main__':
                     file_window = FileSelector()
                     file_window.show()
                     app.exec()
-                    file = int(file_window.selected_file_index)
+                    # file = int(file_window.selected_file_index)
                     # وارد کردن لینک گروه
                     send_link = LinkInputWindow()
                     send_link.show()
@@ -69,7 +69,10 @@ if __name__ == '__main__':
                     link = send_link.link
 
                     start_add_user_csv = Add_user_csv_graphic(driver, username, link)
+                    file=file_window.file_select
                     file_name = start_add_user_csv.prepare_csv_file(file)
+
+                    print(file)
                     start_add_user_csv.search()
                     time.sleep(3)
                     start_add_user_csv.add_user(file_name)
@@ -87,7 +90,7 @@ if __name__ == '__main__':
                     file_window = FileSelector()
                     file_window.show()
                     app.exec()
-                    file = int(file_window.selected_file_index)
+                    file = (file_window.file_select)
                     start_add_user_csv = Add_user_csv_graphic(driver, username, link)
                     file_name = start_add_user_csv.prepare_csv_file(file)
                     cunt_user_dialog=UserCountDialog()
@@ -103,7 +106,7 @@ if __name__ == '__main__':
                     file_window.show()
                     app.exec()
                     links = None
-                    file = int(file_window.selected_file_index)
+                    file = (file_window.file_select)
                     start_add_user_csv = Add_user_csv_graphic(driver, username, links)
                     file_name = start_add_user_csv.prepare_csv_file(file)
 
